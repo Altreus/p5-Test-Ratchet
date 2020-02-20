@@ -103,7 +103,7 @@ sub ratchet {
         # Or it's an asterisk, in which case do the next subref forever.
         if (not ref $now) {
             if ($now eq '*') {
-                return $now->(@_);
+                return $subrefs[1]->(@_);
             }
 
             if ($now > 0) {
@@ -114,10 +114,11 @@ sub ratchet {
             else {
                 shift @subrefs; shift @subrefs;
                 # redo
-                $recurse->(@_);
+                return $recurse->(@_);
             }
         }
-        if (@subrefs > 1 and defined $subrefs[1]) {
+
+        else {
             shift @subrefs;
         }
 
