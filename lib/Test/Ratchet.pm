@@ -39,7 +39,7 @@ I'm sure it has other purposes too.
         \&first_implementation,
         \&second_implementation,
         ...
-    );
+    ));
 
     sub first_implementation {
         my $self = shift;
@@ -77,7 +77,7 @@ multiple refs to the same thing:
 
 A number will repeat the subref after it N times
 
-=item *
+=item Z<>*
 
 An asterisk will repeat the subref after it indefinitely.
 

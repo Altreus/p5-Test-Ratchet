@@ -28,7 +28,7 @@ SYNOPSIS
             \&first_implementation,
             \&second_implementation,
             ...
-        );
+        ));
 
         sub first_implementation {
             my $self = shift;
@@ -63,11 +63,4 @@ EXPORTS
     *   An asterisk will repeat the subref after it indefinitely.
 
     If the mocked sub is called and the queue has expired, it will die.
-
-POD ERRORS
-    Hey! The above document had some coding errors, which are explained
-    below:
-
-    Around line 80:
-        Expected text after =item, not a bullet
 
