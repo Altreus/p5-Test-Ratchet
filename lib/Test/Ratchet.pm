@@ -5,6 +5,8 @@ package Test::Ratchet;
 use Exporter::Easy ( EXPORT => [ qw/ratchet/ ] );
 use Data::Munge qw(rec);
 
+our $VERSION = '0';
+
 # ABSTRACT: Mocking helper that swaps out implementations automatically
 
 =head1 DESCRIPTION
@@ -34,12 +36,21 @@ I'm sure it has other purposes too.
     use Test::MockModule;
     use Test::More;
 
+    use Some::Module;
+
     my $mock = Test::MockModule->new('Some::Module');
     $mock->mock( magic_method => ratchet(
         \&first_implementation,
         \&second_implementation,
-        ...
     ));
+
+    # In reality, you will have no control over the use of this object - which
+    # is the purpose of the module in the first place! The actual use of this
+    # object would be deep in the code you are actually testing.
+    my $obj = Some::Module->new;
+
+    $obj->magic_method('foo'); # Returns { something => 'relevant' }
+    $obj->magic_method('bar'); # Returns { something => 'else' }
 
     sub first_implementation {
         my $self = shift;
