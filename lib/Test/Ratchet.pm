@@ -154,7 +154,9 @@ To keep the interface simple the test failure uses a generic message.
 
 sub clank($) {
     my $subref = shift;
-    my $clank = rec { my $rec = shift; $Test::Ratchet::Clank::CLANK{ refaddr $rec } = 1; &$subref };
+    my $caller = sprintf "%s, line %s", (caller)[1,2];
+    my $clank = rec { my $rec = shift; delete $Test::Ratchet::Clank::CLANK{ refaddr $rec }; &$subref };
+    $Test::Ratchet::Clank::CLANK{refaddr $clank} = $caller;
     bless $clank, "Test::Ratchet::Clank";
 }
 
@@ -167,7 +169,7 @@ our %CLANK;
 sub DESTROY {
     my $self = shift;
     require Test::More;
-    Test::More::fail("A Clank was never run!") unless $CLANK{ refaddr $self };
+    Test::More::fail("A Clank was never run! Created at " . $CLANK{refaddr $self}) if $CLANK{ refaddr $self };
 }
 
 =head1 KNOWN ISSUES
