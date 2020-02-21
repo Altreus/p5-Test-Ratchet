@@ -17,14 +17,15 @@ my %WriteMakefileArgs = (
   "NAME" => "Test::Ratchet",
   "PREREQ_PM" => {
     "Data::Munge" => 0,
-    "Exporter::Easy" => 0
+    "Exporter::Easy" => 0,
+    "Scalar::Util" => 0
   },
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "0.002",
+  "VERSION" => "0.003",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -36,6 +37,7 @@ my %FallbackPrereqs = (
   "Exporter::Easy" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
+  "Scalar::Util" => 0,
   "Test::More" => 0
 );
 

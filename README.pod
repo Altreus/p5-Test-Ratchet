@@ -8,7 +8,7 @@ Test::Ratchet - Mocking helper that swaps out implementations automatically
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -73,7 +73,7 @@ I'm sure it has other purposes too.
 
 =head1 EXPORTS
 
-This module exports L</ratchet> by default - this is the only export.
+This module exports L</ratchet> and L</clank> on request.
 
 =head2 ratchet
 
@@ -96,6 +96,24 @@ An asterisk will repeat the subref after it indefinitely.
 =back
 
 If the mocked sub is called and the queue has expired, it will die.
+
+=head2 clank
+
+A clank is a subref that outputs a test failure if it is not run at least once
+before it goes out of scope. You can use it in your ratchet, or independently.
+
+    ratchet (
+        clank \&must_run,
+        \&might_run
+    );
+
+To keep the interface simple the test failure uses a generic message.
+
+=head1 KNOWN ISSUES
+
+There is no test for the clank function. I tried to write one but the purpose of
+it is to cause a test failure. Nothing that I did would accept that as a
+success, although there are hacky things I didn't try.
 
 =head1 AUTHOR
 

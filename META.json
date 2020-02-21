@@ -32,7 +32,8 @@
       "runtime" : {
          "requires" : {
             "Data::Munge" : "0",
-            "Exporter::Easy" : "0"
+            "Exporter::Easy" : "0",
+            "Scalar::Util" : "0"
          }
       },
       "test" : {
@@ -49,7 +50,11 @@
    "provides" : {
       "Test::Ratchet" : {
          "file" : "lib/Test/Ratchet.pm",
-         "version" : "0.002"
+         "version" : "0.003"
+      },
+      "Test::Ratchet::Clank" : {
+         "file" : "lib/Test/Ratchet.pm",
+         "version" : "0.003"
       }
    },
    "release_status" : "stable",
@@ -64,7 +69,7 @@
          "web" : "https://github.com/Altreus/p5-Test-Ratchet"
       }
    },
-   "version" : "0.002",
+   "version" : "0.003",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.030000"
@@ -253,7 +258,7 @@
                   "branch" : null,
                   "changelog" : "Changes",
                   "signed" : 0,
-                  "tag" : "0.002",
+                  "tag" : "0.003",
                   "tag_format" : "%v",
                   "tag_message" : "%v"
                },
