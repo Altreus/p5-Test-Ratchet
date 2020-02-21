@@ -170,4 +170,12 @@ sub DESTROY {
     Test::More::fail("A Clank was never run!") unless $CLANK{ refaddr $self };
 }
 
+=head1 KNOWN ISSUES
+
+There is no test for the clank function. I tried to write one but the purpose of
+it is to cause a test failure. Nothing that I did would accept that as a
+success, although there are hacky things I didn't try.
+
+=cut
+
 1;
