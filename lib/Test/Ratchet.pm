@@ -5,7 +5,7 @@ package Test::Ratchet;
 use Exporter::Easy ( EXPORT => [ qw/ratchet/ ] );
 use Data::Munge qw(rec);
 
-our $VERSION = '0';
+our $VERSION = '0.003';
 
 # ABSTRACT: Mocking helper that swaps out implementations automatically
 
