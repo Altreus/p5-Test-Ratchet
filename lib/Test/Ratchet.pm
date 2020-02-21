@@ -4,6 +4,7 @@ package Test::Ratchet;
 
 use Exporter::Easy ( EXPORT => [ qw/ratchet/ ] );
 use Data::Munge qw(rec);
+use Scalar::Util qw(refaddr);
 
 our $VERSION = '0.003';
 
@@ -137,5 +138,36 @@ sub ratchet {
     };
 }
 
+=head2 clank
+
+A clank is a subref that outputs a test failure if it is not run at least once
+before it goes out of scope. You can use it in your ratchet, or independently.
+
+    ratchet (
+        clank \&must_run,
+        \&might_run
+    );
+
+To keep the interface simple the test failure uses a generic message.
+
+=cut
+
+sub clank($) {
+    my $subref = shift;
+    my $clank = rec { my $rec = shift; $Test::Ratchet::Clank::CLANK{ refaddr $rec } = 1; &$subref };
+    bless $clank, "Test::Ratchet::Clank";
+}
+
+package Test::Ratchet::Clank;
+
+use Scalar::Util qw(refaddr);
+
+our %CLANK;
+
+sub DESTROY {
+    my $self = shift;
+    require Test::More;
+    Test::More::fail("A Clank was never run!") unless $CLANK{ refaddr $self };
+}
 
 1;
