@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Test::Ratchet;
 
-use Exporter::Easy ( EXPORT => [ qw/ratchet/ ] );
+use Exporter::Easy ( OK => [ qw/ratchet clank/ ] );
 use Data::Munge qw(rec);
 use Scalar::Util qw(refaddr);
 
@@ -73,7 +73,7 @@ I'm sure it has other purposes too.
 
 =head1 EXPORTS
 
-This module exports L</ratchet> by default - this is the only export.
+This module exports L</ratchet> and L</clank> on request.
 
 =head2 ratchet
 
