@@ -3,7 +3,10 @@
 use strict;
 use warnings;
 
+use Scalar::Util qw(weaken);
+
 use Test::Ratchet qw(ratchet clank);
+use Test::MockModule;
 use Test::Most 'no_plan';
 use Try::Tiny;
 
@@ -15,16 +18,22 @@ subtest "Clank runs" => sub {
 };
 
 subtest "Clank doesn't run" => sub {
-    die_on_fail;
-    dies_ok {
-        do {
-            my $clank = clank sub {
-                fail "Clank ran!";
-            }
+    my $testmock = Test::MockModule->new('Test::More');
+    $testmock->mock('fail', sub { like $_[0], qr/A Clank was never run/, "Test failed!" } );
+
+    do {
+        my $closure_tm = $testmock;
+        weaken $closure_tm;
+        my $clank = clank sub {
+            $closure_tm->unmock('fail');
+            fail "Clank ran!";
         }
     };
 
-    restore_fail;
+    # This seems to ensure $testmock hangs around but $clank is destroyed.
+    # Otherwise I guess Perl thinks both scopes end at the same time and does
+    # them in the wrong order.
+    pass "Scope closed...";
 };
 
 subtest "Clank in a ratchet" => sub {
@@ -39,17 +48,19 @@ subtest "Clank in a ratchet" => sub {
     };
 
     subtest "One doesn't run" => sub {
-        TODO: {
-            local $TODO = "Clank expected to fail";
-            do {
-                my $ratchet = ratchet(
-                    sub { note "Not a clank" }, # Can't be an ok or TODO would be sad
-                    clank sub { ok "Clank2" }
-                );
+        my $testmock = Test::MockModule->new('Test::More');
+        $testmock->mock('fail', sub { like $_[0], qr/A Clank was never run/, "Test failed!" } );
 
-                $ratchet->();
-            }
-        }
+        do {
+            my $ratchet = ratchet(
+                sub { note "Not a clank" }, # Can't be an ok or TODO would be sad
+                clank sub { ok "Clank2" }
+            );
+
+            $ratchet->();
+        };
+
+        pass "Scope closed...";
     }
 };
 
