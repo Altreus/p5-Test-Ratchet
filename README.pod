@@ -8,7 +8,7 @@ Test::Ratchet - Mocking helper that swaps out implementations automatically
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -108,12 +108,6 @@ before it goes out of scope. You can use it in your ratchet, or independently.
     );
 
 To keep the interface simple the test failure uses a generic message.
-
-=head1 KNOWN ISSUES
-
-There is no test for the clank function. I tried to write one but the purpose of
-it is to cause a test failure. Nothing that I did would accept that as a
-success, although there are hacky things I didn't try.
 
 =head1 AUTHOR
 

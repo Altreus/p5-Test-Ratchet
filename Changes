@@ -1,5 +1,11 @@
 {{ $NEXT }}
 
+0.004     2020-02-21 14:33:03 GMT
+
+    - Figured out how to test clank
+    - When a Clank causes a failure because it wasn't run, it now reports the
+      line of code that originally created it.
+
 0.003     2020-02-21 13:15:30 GMT
 
     - Added clank function, name courtesy of pink_mist on IRC
