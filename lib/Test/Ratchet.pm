@@ -6,7 +6,7 @@ use Exporter::Easy ( OK => [ qw/ratchet clank/ ] );
 use Data::Munge qw(rec);
 use Scalar::Util qw(refaddr);
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 # ABSTRACT: Mocking helper that swaps out implementations automatically
 
