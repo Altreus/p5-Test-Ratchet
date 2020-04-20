@@ -33,7 +33,7 @@ I'm sure it has other purposes too.
 
 =head1 SYNOPSIS
 
-    use Test::Ratchet;
+    use Test::Ratchet qw(ratchet clank);
     use Test::MockModule;
     use Test::More;
 
@@ -43,6 +43,9 @@ I'm sure it has other purposes too.
     $mock->mock( magic_method => ratchet(
         \&first_implementation,
         \&second_implementation,
+
+        # A clank *must* be run, or the test fails!
+        clank \&third_implementation,
     ));
 
     # In reality, you will have no control over the use of this object - which
@@ -52,6 +55,11 @@ I'm sure it has other purposes too.
 
     $obj->magic_method('foo'); # Returns { something => 'relevant' }
     $obj->magic_method('bar'); # Returns { something => 'else' }
+
+    # This test will fail! magic_method was only run twice, but there are three
+    # implementations - and the third one is a clank! Failing to run a clank
+    # causes a test failure.
+    done_testing;
 
     sub first_implementation {
         my $self = shift;
@@ -69,6 +77,16 @@ I'm sure it has other purposes too.
         is $arg1, "bar", "Second call passed bar to magic_method";
 
         return { something => 'else' }
+    }
+
+
+    sub third_implementation {
+        my $self = shift;
+        my $arg1 = shift;
+
+        is $arg1, "zip", "Third call passed zip to magic_method";
+
+        return { something => 'different' }
     }
 
 =head1 EXPORTS
@@ -148,7 +166,20 @@ before it goes out of scope. You can use it in your ratchet, or independently.
         \&might_run
     );
 
-To keep the interface simple the test failure uses a generic message.
+To keep the interface simple the test failure uses a generic message that tells
+you as best as it can the script and line number at which the clank appears.
+
+I recommend that you ensure your clank goes out of scope before you end your
+test suite, so that you don't accidentally output your test summary before it
+has a chance to fail.
+
+    {
+        my $mock = Test::MockModule->new(...);
+        $mock->mock('method', clank sub { ... });
+        ... tests ...
+    }
+
+    done_testing;
 
 =cut
 
