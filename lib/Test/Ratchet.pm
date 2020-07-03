@@ -123,7 +123,7 @@ sub ratchet {
     my $ratchet = rec {
         my $recurse = shift;
         if (! @subrefs) {
-            die "Tried to run a ratchet but there was nothing left to do!";
+            die "Tried to run a ratchet but there was nothing left to do! Defined at: " . $Test::Ratchet::Ratchet::RATCHET{ refaddr $recurse };
         }
 
         my $now = $subrefs[0];
@@ -154,6 +154,11 @@ sub ratchet {
 
         $now->(@_);
     };
+
+    my $caller = sprintf "%s, line %s", (caller)[1,2];
+    $Test::Ratchet::Ratchet::RATCHET{refaddr $ratchet} = $caller;
+
+    return $ratchet;
 }
 
 =head2 clank
@@ -202,5 +207,9 @@ sub DESTROY {
     require Test::More;
     Test::More::fail("A Clank was never run! Created at " . $CLANK{refaddr $self}) if $CLANK{ refaddr $self };
 }
+
+package Test::Ratchet::Ratchet;
+
+our %RATCHET;
 
 1;
